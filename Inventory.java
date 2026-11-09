@@ -111,6 +111,7 @@ public class Inventory {
 				return i;
 			}
 		}
+		
 		return -1;
 	}
 	

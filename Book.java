@@ -66,7 +66,7 @@ public class Book {
 		return String.format(
 				"ID: %d%nTitle: %s%nAuthor: %s%nISBN: %s%n"
 						+ "Number of pages: %d%n"
-						+ "------------------------------",
+						+ " -------------------- ",
 				id, title, author, ISBN, numberOfPages);
 	}
 
