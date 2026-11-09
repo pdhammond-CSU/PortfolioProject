@@ -1,2 +1,121 @@
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class Inventory {
+
+	private final ArrayList<Book> mainInventory = new ArrayList<>();
+	private final ArrayList<Book> lendingInventory = new ArrayList<>();
+
+	// Creates and stores a new book if the ID is not already used.
+	public void addBook(int id, String title, String author, String ISBN, int numberOfPages) {
+		if (isIdInUse(id)) {
+			System.out.println("A book with that ID already exists.");
+			return;
+		}
+
+		mainInventory.add(new Book(id, title, author, ISBN, numberOfPages));
+		System.out.println("Book added to the library.");
+	}
+	
+	// Moves an available book to the lending inventory.
+	public void borrowBook(int id) {
+		int index = findBookIndex(mainInventory, id);
+
+		if (index != -1) {
+			transferBook(mainInventory, lendingInventory, index);
+			System.out.println("Book successfully borrowed.");
+		} 
+		else if (findBookIndex(lendingInventory, id) != -1) {
+			System.out.println("That book is already borrowed.");
+		} 
+		else {
+			System.out.println("Book not found.");
+		}
+	}
+
+	// Moves a borrowed book back to the main inventory.
+	public void returnBook(int id) {
+		if (lendingInventory.isEmpty()) {
+			System.out.println("No books are currently borrowed.");
+			return;
+		}
+
+		int index = findBookIndex(lendingInventory, id);
+
+		if (index != -1) {
+			transferBook(lendingInventory, mainInventory, index);
+			System.out.println("Book successfully returned.");
+		} 
+		else {
+			System.out.println("That book is not in the lending inventory.");
+		}
+	}
+	
+	// Returns all available books matching the title, ignoring case.
+	public ArrayList<Book> searchByTitle(String title) {
+		ArrayList<Book> matches = new ArrayList<>();
+		String searchTitle = title.trim().toLowerCase(Locale.ROOT);
+
+		for (Book book : mainInventory) {
+			if (book.getTitle().toLowerCase(Locale.ROOT).contains(searchTitle)) {
+				matches.add(book);
+			}
+		}
+		
+		return matches;
+	}
+
+	// Displays every book currently available in the main inventory.
+	public void printAll() {
+		if (mainInventory.isEmpty()) {
+			System.out.println("No books are currently available.");
+			return;
+		}
+
+		System.out.println("\n Available Books: ");
+
+		for (Book book : mainInventory) {
+			book.printBookInfo();
+		}
+
+		System.out.println("Available copies: " + getMainInventoryCount());
+		System.out.println("Borrowed copies: " + getLendingInventoryCount());
+		System.out.println("Total copies owned: " + getTotalBookCount());
+	}
+
+	
+	// Returns the number of available copies.
+	public int getMainInventoryCount() {
+		return mainInventory.size();
+	}
+
+	// Returns the number of currently borrowed copies.
+	public int getLendingInventoryCount() {
+		return lendingInventory.size();
+	}
+
+	// Returns the total number of copies owned.
+	public int getTotalBookCount() {
+		return mainInventory.size() + lendingInventory.size();
+	}
+
+	// Checks both inventories for the given ID.
+	private boolean isIdInUse(int id) {
+		return findBookIndex(mainInventory, id) != -1 || findBookIndex(lendingInventory, id) != -1;
+	}
+
+	// Returns the index of the book with the given ID, or -1 if absent.
+	private int findBookIndex(ArrayList<Book> books, int id) {
+		for (int i = 0; i < books.size(); i++) {
+			if (books.get(i).getId() == id) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	// Removes the book at the given index and adds it to the other list.
+	private void transferBook(ArrayList<Book> from, ArrayList<Book> to, int index) {
+		to.add(from.remove(index));
+	}
 }

@@ -3,7 +3,7 @@ public class Book {
 	private int id;
 	private String title;
 	private String author;
-	private String isbn;
+	private String ISBN;
 	private int numberOfPages;
 
 	// Initializes a book with default values.
@@ -12,11 +12,11 @@ public class Book {
 	}
 
 	// Initializes a book with the given details.
-	public Book(int id, String title, String author, String isbn, int numberOfPages) {
+	public Book(int id, String title, String author, String ISBN, int numberOfPages) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
-		this.isbn = isbn;
+		this.ISBN = ISBN;
 		this.numberOfPages = numberOfPages;
 	}
 
@@ -45,11 +45,11 @@ public class Book {
 	}
 
 	public String getIsbn() {
-		return isbn;
+		return ISBN;
 	}
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
+	public void setIsbn(String ISBN) {
+		this.ISBN = ISBN;
 	}
 
 	public int getNumberOfPages() {
@@ -67,8 +67,7 @@ public class Book {
 				"ID: %d%nTitle: %s%nAuthor: %s%nISBN: %s%n"
 						+ "Number of pages: %d%n"
 						+ "------------------------------",
-				id, title, author, isbn, numberOfPages
-		);
+				id, title, author, ISBN, numberOfPages);
 	}
 
 	// Displays this book's information.
